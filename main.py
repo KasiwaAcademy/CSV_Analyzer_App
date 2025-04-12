@@ -71,8 +71,9 @@ if uploaded_file is not None:
             selected_col = st.selectbox("Pick a numeric column for histogram", categorical_cols)
             if selected_col:
                 freq_table = df[selected_col].value_counts().reset_index()
-                fig = px.bar(df, x= freq_table.iloc[:, 1], y=freq_table.iloc[:, 1], orientation='h',
-                             labels={'x': 'Frequency', 'y': ''}, title=f" Bar-Chart for {selected_col}", color = freq_table.iloc[:, 1])
+                freq_table.rename(columns={'count':'Count'}, inplace=True)
+                fig = px.bar(freq_table, x= f"{selected_col}", y="Count",
+                             labels={'x': 'Categories', 'y': 'Frequency'}, title=f" Bar-Chart for {selected_col}", color = "Count")
 
                 # Show in Streamlit
                 st.plotly_chart(fig, use_container_width=True)
