@@ -1,6 +1,8 @@
 import numpy as np
 import streamlit as st
 import pandas as pd
+import plotly.express as px
+from narwhals.selectors import categorical
 
 st.markdown("<h1 style='text-align: center;'>CSV Analyzer</h1>", unsafe_allow_html=True)
 st.divider()
@@ -55,4 +57,23 @@ if uploaded_file is not None:
             else:
                 st.write(df[column].value_counts().plot(kind="bar"))
                 st.pyplot()
+
+        with tab2:
+            numeric_cols = df.select_dtypes(include='number').columns.tolist()
+            selected_col = st.selectbox("Pick a numeric column for histogram", numeric_cols)
+
+            if selected_col:
+                fig3 = px.histogram(df, x=selected_col, nbins=10, title=f'Distribution of {selected_col}')
+                st.plotly_chart(fig3, use_container_width=True)
+
+        with tab3:
+            categorical_cols = df.select_dtypes(exclude='number').columns.tolist()
+            selected_col = st.selectbox("Pick a numeric column for histogram", categorical_cols)
+            if selected_col:
+                freq_table = df[selected_col].value_counts().reset_index()
+                fig = px.bar(df, x= freq_table.iloc[:, 1], y=freq_table.iloc[:, 1], orientation='h',
+                             labels={'x': 'Frequency', 'y': ''}, title=f" Bar-Chart for {selected_col}", color = freq_table.iloc[:, 1])
+
+                # Show in Streamlit
+                st.plotly_chart(fig, use_container_width=True)
 ########################################################################################################################
