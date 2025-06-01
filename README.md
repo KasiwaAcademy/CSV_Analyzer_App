@@ -25,7 +25,7 @@ Build a web app where users upload a CSV file and see:
 
 ## Steps
 
-### Step 1: **Basic Setup**
+### Step 1: Basic Setup
 
 * Install the required Libraries
 * Import the Libraries
